@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import Lottie from "lottie-react";
 import emptyBox from "../json/emptyBox.json";
 import useCartState from '../state/cartState';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 
 
@@ -48,34 +48,34 @@ const EmptyCart: FC = () => {
     )
 }
 
-interface CardCartProps {
-    id: number;
-    price: number;
-    size: number;
-    name: string;
-    image: string;
-}
+// interface CardCartProps {
+//     id: number;
+//     price: number;
+//     size: number;
+//     name: string;
+//     image: string;
+// }
 
-const CardCart: FC<CardCartProps> = ({ id, price, size, name, image }) => {
+// const CardCart: FC<CardCartProps> = ({ id, price, size, name, image }) => {
 
-    const removeProduct = (id: number) => {
-        console.log('remove', id)
-    }
+//     const removeProduct = (id: number) => {
+//         console.log('remove', id)
+//     }
 
-    return (
-        <div className='flex gap-4 justify-start items-center w-full border p-4 rounded-xl bg-gray-900'>
-            <span className='h-20 w-32 bg-gray-700'></span>
-            <div className='flex flex-col gap-2'>
-                <Link to={'/product'} className='text-2xl font-semibold duration-300 delay-100 hover:text-primary'>{name}</Link>
-                <div className='flex items-center gap-2'>
-                    <h2 className=' rounded-full font-semibold bg-primary w-fit px-4 py-1'>{price}$</h2>
-                    <h2 className=' rounded-full font-semibold bg-prime2 w-fit px-4 py-1'>{size} Inch</h2>
-                </div>
-            </div>
-            <button onClick={() => removeProduct(id)} className='ml-auto'>
-                <i className="fa-solid fa-trash-can fa-2x duration-300 delay-100 hover:text-primary"></i>
-            </button>
-        </div>
-    )
-}
+//     return (
+//         <div className='flex gap-4 justify-start items-center w-full border p-4 rounded-xl bg-gray-900'>
+//             <span className='h-20 w-32 bg-gray-700'></span>
+//             <div className='flex flex-col gap-2'>
+//                 <Link to={'/product'} className='text-2xl font-semibold duration-300 delay-100 hover:text-primary'>{name}</Link>
+//                 <div className='flex items-center gap-2'>
+//                     <h2 className=' rounded-full font-semibold bg-primary w-fit px-4 py-1'>{price}$</h2>
+//                     <h2 className=' rounded-full font-semibold bg-prime2 w-fit px-4 py-1'>{size} Inch</h2>
+//                 </div>
+//             </div>
+//             <button onClick={() => removeProduct(id)} className='ml-auto'>
+//                 <i className="fa-solid fa-trash-can fa-2x duration-300 delay-100 hover:text-primary"></i>
+//             </button>
+//         </div>
+//     )
+// }
 

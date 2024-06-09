@@ -7,14 +7,11 @@ import Cart from './components/Cart';
 import MobNav from './components/MobNav';
 import Auth from './routes/Auth';
 import Dashboard from './routes/Dashboard';
-import Loading from './components/Loading';
 import NotFound from './routes/NotFound';
-import Supa from './routes/Supa';
 import Verify from './routes/Verify';
 import supabase from './lib/supabase/client';
 import UserDetails from './routes/UserDetails';
 import Profile from './routes/Profile';
-import Products from './routes/Bikes';
 import Bikes from './routes/Bikes';
 
 const Layout: FC = () => {

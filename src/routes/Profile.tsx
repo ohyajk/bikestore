@@ -4,7 +4,7 @@ const Profile: FC = () => {
 
     const [user, setUser] = useState<any>(null)
 
-    const colors: String[] = [
+    const colors: string[] = [
         "#FFA500", // Orange
         "#87CEEB", // Skyblue
         "#008000", // Green
@@ -20,7 +20,7 @@ const Profile: FC = () => {
         "#800000", // Maroon
         "#808000", // Olive
     ];
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const randomColor: string = colors[Math.floor(Math.random() * colors.length)];
 
     const getUserData = async () => {
 
