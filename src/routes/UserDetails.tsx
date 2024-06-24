@@ -3,31 +3,42 @@ import supabase from '../lib/supabase/client'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
+import z from 'zod'
+
+const schema = z.object({
+    name: z.string().toLowerCase().min(1, { message: "Name cannot be empty" }),
+    phone: z.string().min(10, { message: "Phone Number should be 10 digits" }).max(10),
+    address: z.string().toLowerCase().min(1, { message: "Address cannot be empty" })
+})
+
 const UserDetails: FC = () => {
     const navigate = useNavigate()
-    const [loading, setLoading] = useState(false)
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [address, setAddress] = useState('')
-    const updateDetails = async () => {
-        setLoading(true)
-        if (!name || !phone || !address) {
-            toast.warn("Please Fill All Fields !", { style: { background: '#2a2a2a', borderWidth: 1, borderColor: '#FFF', boxShadow: '0px 0px 30px 0px rgba(255,94,0,0.3)' } });
-            setLoading(false)
-            return null
-        }
-        await supabase.auth.updateUser({
-            data: { name, phone, address }
-        }).then(() => {
-            toast.success("Details Updated Successfully !", { style: { background: '#2a2a2a', borderWidth: 1, borderColor: '#FFF', boxShadow: '0px 0px 30px 0px rgba(255,94,0,0.3)' } });
-            navigate('/dashboard')
-        }).catch((error) => {
-            console.log(error.message)
+
+    const { mutateAsync, isPending } = useMutation({
+        mutationFn: async () => {
+            const user = (await supabase.auth.getSession()).data.session?.user
+            if (!user) throw new Error("User not found, Please login again")
+            if (!name || !phone || !address) throw new Error("All fields are required")
+            await schema.parseAsync({ name, phone, address }).catch((error) => {
+                throw new Error(error.errors[0].message)
+
+            })
+            const number = parseInt(phone)
+            await supabase.from('customers').insert({ id: user.id, email: user.email, name, phone: number, address })
+        },
+        onSuccess: () => {
+            toast.success("Welcome to BikeStore !", { style: { background: '#2a2a2a', borderWidth: 1, borderColor: '#FFF', boxShadow: '0px 0px 30px 0px rgba(255,94,0,0.3)' } });
+            navigate('/')
+        },
+        onError: (error) => {
             toast.error(error.message, { style: { background: '#2a2a2a', borderWidth: 1, borderColor: '#FFF', boxShadow: '0px 0px 30px 0px rgba(255,94,0,0.3)' } });
-        }).finally(() => {
-            setLoading(false)
-        })
-    }
+
+        }
+    })
 
     return (
         <div className='h-[calc(100vh-32px)] flex justify-center items-center p-4'>
@@ -49,19 +60,19 @@ const UserDetails: FC = () => {
                     </div>
                     <div className='relative flex  items-center hover:scale-105 delay-75 duration-200 ease-in-out hover:text-primary '>
                         <i className="absolute fa-solid fa-phone left-4"></i>
-                        <input autoComplete="cc-csc" onChange={(e) => setPhone(e.target.value)} value={phone} type="tel" placeholder='Your Phone' className=' bg-[#2a2a2a]/50 border border-primary outline-none text-white  w-full py-2 pl-10 pr-4 rounded-lg' />
+                        <input maxLength={10} autoComplete="cc-csc" onChange={(e) => setPhone(e.target.value)} value={phone} type="tel" placeholder='Your Phone' className=' bg-[#2a2a2a]/50 border border-primary outline-none text-white  w-full py-2 pl-10 pr-4 rounded-lg' />
                     </div>
                     <div className='relative flex  items-center hover:scale-105 delay-75 duration-200 ease-in-out hover:text-primary '>
                         <i className="absolute fa-solid fa-building left-4 top-3"></i>
                         <textarea autoComplete="cc-csc" rows={4} onChange={(e) => setAddress(e.target.value)} value={address} placeholder='Your Address' className=' bg-[#2a2a2a]/50 border border-primary outline-none text-white  w-full py-2 pl-10 pr-4 rounded-lg' />
                     </div>
                     {
-                        loading ?
+                        isPending ?
                             <button className='bg-prime2 text-white p-2 rounded-md hover:scale-105 delay-75 duration-200 ease-in-out '>
                                 <i className="fa-solid fa-spinner animate-spin"></i>
                             </button>
                             :
-                            <button onClick={updateDetails} className='bg-primary text-white p-2 rounded-md hover:scale-105 delay-75 duration-200 ease-in-out active:bg-primary/50 '>Save Details</button>
+                            <button onClick={() => mutateAsync()} className='bg-primary text-white p-2 rounded-md hover:scale-105 delay-75 duration-200 ease-in-out active:bg-primary/50 '>Save Details</button>
                     }
                 </motion.div>
             </AnimatePresence>

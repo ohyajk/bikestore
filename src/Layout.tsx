@@ -13,6 +13,7 @@ import supabase from './lib/supabase/client';
 import UserDetails from './routes/UserDetails';
 import Profile from './routes/Profile';
 import Bikes from './routes/Bikes';
+import Bike from './routes/Bike';
 
 const Layout: FC = () => {
     const [session, setSession] = useState<any>(null)
@@ -46,6 +47,7 @@ const Layout: FC = () => {
                         <Route path="*" element={<NotFound />} />
                         <Route path="/" element={<Home />} />
                         <Route path="/bikes" element={<Bikes />} />
+                        <Route path="/bike/:url" element={<Bike />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/auth" element={<Auth />} />
                         <Route path="/verify" element={<Verify />} />

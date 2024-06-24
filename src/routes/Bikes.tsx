@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bike } from '../types/types';
 import { useQuery } from '@tanstack/react-query';
 import supabase from '../lib/supabase/client';
+import { Link } from 'react-router-dom';
+
 const Bikes: FC = () => {
     const [minValue, set_minValue] = useState(5000);
     const [maxValue, set_maxValue] = useState(25000);
@@ -35,6 +37,9 @@ const Bikes: FC = () => {
         set_minValue(e.minValue);
         set_maxValue(e.maxValue);
     };
+
+    const MotionLink = motion(Link);
+
 
 
     return (
@@ -119,21 +124,19 @@ const Bikes: FC = () => {
                             .sort(sortByZ2A ? (a: Bike, b: Bike) => (b.name?.toLowerCase() || "").localeCompare(a.name?.toLowerCase() || "") : undefined)
                             .map((p: Bike, i: Number) => {
                                 return (
-                                    <motion.div
+                                    <MotionLink to={`/bike/${p.url}`}
                                         initial={{ opacity: 0, scale: 0 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ delay: 0.2, duration: 0.7, type: 'spring', bounce: 0.4, ease: 'easeInOut' }}
                                         exit={{ opacity: 0, scale: 0, animation: 'ease-in-out', type: 'spring', transition: { duration: 0.3, delay: 0.2 } }}
                                         className="relative flex h-fit w-full max-w-xs flex-col overflow-hidden rounded-lg border-4 border-gray-100 bg-white shadow-xl cursor-pointer hover:border-primary"
                                         key={`key${i}`}>
-                                        <a className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
+                                        <span className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" >
                                             <img className="object-cover " src={p.image} alt="product image" />
                                             <span className="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">{p.discount}% OFF</span>
-                                        </a>
+                                        </span>
                                         <div className="mt-4 px-5 pb-5">
-                                            <a href="#">
-                                                <h5 className="text-xl tracking-tight font-medium text-black">{p.name}</h5>
-                                            </a>
+                                            <h5 className="text-xl tracking-tight font-medium text-black">{p.name}</h5>
                                             <div className="mt-2 mb-5 flex items-center justify-between">
                                                 <p>
                                                     <span className="text-3xl font-bold text-black">&#8377;{p.price}</span>
@@ -158,7 +161,7 @@ const Bikes: FC = () => {
                                                 </svg>
                                                 Add to cart</a> */}
                                         </div>
-                                    </motion.div>
+                                    </MotionLink>
                                 )
                             })
                     }

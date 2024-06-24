@@ -6,5 +6,6 @@ export interface Bike {
     originalPrice: number;
     rating: number;
     discount: number;
+    url : string;
   }
   

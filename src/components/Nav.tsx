@@ -27,9 +27,9 @@ const Nav: FC = () => {
     }, [])
 
     return (
-        <header className="border-b border-white px-8">
-            <nav className="mx-auto max-w-7xl h-[80px] flex justify-between items-center " >
-                <span className="flex flex-col items-center justify-center">
+        <header className="border-b border-white h-[80px] px-8">
+            <nav className="mx-auto h-full max-w-7xl  flex justify-between items-center " >
+                <span className="flex flex-col items-center justify-center ">
                     <img src="/logo.png" alt="logo" />
                     <h1 className="logo-font ">BikeStore</h1>
                 </span>

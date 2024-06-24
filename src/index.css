@@ -4,6 +4,12 @@
 
 /* Main clr : #ff5e00 */
 
+@layer components {
+    .screen-height {
+        @apply h-[calc(100vh-80px-32px)];
+    }
+}
+
 :root {
     --toastify-color-progress-success: '#FFF !important';
     font-family: 'Poppins', sans-serif;
@@ -44,4 +50,22 @@
 .multi-range-slider .thumb .caption * {
     background-color: #ff5e00 !important;
     box-shadow: none !important;
+}
+
+/* #ff5e00 */
+
+
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+
+}
+
+body::-webkit-scrollbar {
+    width: 8px;
+    border-left: 1px white solid;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #ff5e00;
+
 }
