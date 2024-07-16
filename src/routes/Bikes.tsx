@@ -106,7 +106,7 @@ const Bikes: FC = () => {
                 <div className='flex justify-center items-center h-full'>
                     <i className="fa-solid fa-spinner animate-spin fa-2x text-primary"></i>
                 </div>}
-            {isError || !data &&
+            {isError || !isLoading && !data &&
                 <div className='flex flex-col justify-center items-center h-full'>
                     <img className='h-[200px] ' src='/404.png' />
                     <h2 className='mt-2 text-xl'>No Bikes Available...</h2>

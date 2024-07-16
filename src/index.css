@@ -17,6 +17,10 @@
     color: white;
 }
 
+* {
+    --tw-ring-color: rgb(0 0 0 / 0) !important;
+}
+
 .logo-font {
     font-family: "Poetsen One", sans-serif;
     font-weight: 400;

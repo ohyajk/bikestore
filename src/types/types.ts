@@ -1,7 +1,7 @@
 export interface Bike {
     name: string;
     image: string;
-    id: number;
+    id: string;
     price: number;
     originalPrice: number;
     rating: number;

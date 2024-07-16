@@ -14,6 +14,7 @@ import UserDetails from './routes/UserDetails';
 import Profile from './routes/Profile';
 import Bikes from './routes/Bikes';
 import Bike from './routes/Bike';
+import Contact from './routes/Contact';
 
 const Layout: FC = () => {
     const [session, setSession] = useState<any>(null)
@@ -49,6 +50,7 @@ const Layout: FC = () => {
                         <Route path="/bikes" element={<Bikes />} />
                         <Route path="/bike/:url" element={<Bike />} />
                         <Route path="/about" element={<About />} />
+                        <Route path="/contact" element={<Contact />} />
                         <Route path="/auth" element={<Auth />} />
                         <Route path="/verify" element={<Verify />} />
                         <Route path="/userDetails" element={<UserDetails />} />
