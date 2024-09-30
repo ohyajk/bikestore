@@ -13,8 +13,8 @@
 :root {
     --toastify-color-progress-success: '#FFF !important';
     font-family: 'Poppins', sans-serif;
-    background-color: #1a1a1a;
-    color: white;
+    background-color: #fafafa;
+    color: #0c0c0c;
 }
 
 * {
@@ -65,11 +65,10 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar {
-    width: 8px;
+    width: 14px;
     border-left: 1px white solid;
 }
 
 body::-webkit-scrollbar-thumb {
     background-color: #ff5e00;
-
 }

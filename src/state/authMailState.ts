@@ -1,19 +1,18 @@
-import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
-
+import { create } from "zustand"
+import { persist, createJSONStorage } from "zustand/middleware"
 
 const useEmailState: any = create(
-  persist(
-    (set) => ({
-      email: '',
-      setEmail: (text: String) => set({ email: text }),
-        clearEmail: () => set({ email: '' }),
-    }),
-    {
-      name: 'mail-storage',
-      storage: createJSONStorage(() => sessionStorage), 
-    },
-  ),
+    persist(
+        (set) => ({
+            email: "",
+            setEmailStore: (text: String) => set({ email: text }),
+            clearEmailStore: () => set({ email: "" }),
+        }),
+        {
+            name: "mail-storage",
+            storage: createJSONStorage(() => localStorage),
+        }
+    )
 )
 
 export default useEmailState

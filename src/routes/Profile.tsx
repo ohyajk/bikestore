@@ -1,9 +1,17 @@
 import { FC, useEffect, useState } from "react"
-import supabase from "../lib/supabase/client";
-import DialogBox from "../components/DialogBox";
+import DialogBox from "../components/DialogBox"
+import useUserState from "../state/userState"
+import { useNavigate } from "react-router"
 const Profile: FC = () => {
     const [showDialog, setShowDialog] = useState<boolean>(false)
-    const [user, setUser] = useState<any>(null)
+    const navigate = useNavigate()
+    const { user } = useUserState()
+    console.log(user, "my user data")
+    useEffect(() => {
+        if (user.email === undefined) {
+            navigate("/")
+        }
+    }, [])
 
     const colors: string[] = [
         "#FFA500", // Orange
@@ -11,7 +19,6 @@ const Profile: FC = () => {
         "#008000", // Green
         "#800080", // Purple
         "#FF0000", // Red
-        "#FFFF00", // Yellow
         "#FFC0CB", // Pink
         "#008080", // Teal
         "#00FFFF", // Aqua
@@ -20,51 +27,80 @@ const Profile: FC = () => {
         "#000080", // Navy
         "#800000", // Maroon
         "#808000", // Olive
-    ];
-    const randomColor: string = colors[Math.floor(Math.random() * colors.length)];
-
-    const getUserData = async () => {
-
-        const session = await supabase.auth.getSession()
-        const userId = session.data.session?.user.id
-        const { data } = await supabase.from('customers').select('*').eq('id', userId).single()
-        setUser(data)
-    }
-    console.log(user)
-    useEffect(() => {
-        getUserData()
-    }, [])
-
-
+    ]
+    const randomColor: string =
+        colors[Math.floor(Math.random() * colors.length)]
 
     return (
         <>
-            <div className="screen-height flex flex-col justify-center items-center">
-                <div className='relative bg-white/20 min-h-[400px] w-[400px] rounded-2xl shadow-md p-4 sm:p-8 flex flex-col justify-center items-center gap-4'>
-                    <div className="h-[150px] w-[150px] rounded-full flex justify-center items-center text-white uppercase text-6xl font-bold [text-shadow:_2px_2px_0_rgb(0_0_0_/_80%)]" style={{ backgroundColor: randomColor }} >
-                        {user?.name ? user.name.charAt(0) : '...'}
+            <div className="h-full flex flex-col justify-center items-center ">
+                <div className="relative md:min-w-[420px] bg-white rounded-2xl shadow-md p-4 sm:p-8 flex flex-col justify-center items-center gap-4 border-2 border-primary">
+                    <div
+                        className="h-[150px] w-[150px] rounded-full flex justify-center items-center text-white uppercase text-6xl font-bold [text-shadow:_2px_2px_0_rgb(0_0_0_/_80%)]"
+                        style={{ backgroundColor: randomColor }}
+                    >
+                        {user.name.charAt(0)}
                     </div>
-                    <h1 className="text-4xl font-bold capitalize">{user?.name ? user.name : '...'}</h1>
+                    <h1 className="text-4xl font-bold capitalize">
+                        {user.name}
+                    </h1>
                     <div className="flex flex-col gap-2 w-full">
                         <span className="flex gap-2 items-center">
-                            <i className="text-white/80 fa-solid fa-envelope fa-xl basis-8"></i>
-                            <h2 className="text-white/80 text-xl font-medium capitalize">{user?.email ? user.email : '...'}</h2>
+                            <i className=" fa-solid fa-envelope fa-xl basis-8"></i>
+                            <h2 className="text-lg sm:text-xl font-medium capitalize">
+                                {user.email}
+                            </h2>
                         </span>
-                        <hr className="opacity-50" />
+                        <hr className="" />
                         <span className="flex gap-2 items-center">
-                            <i className="text-white/80 fa-solid fa-phone fa-xl basis-8"></i>
-                            <h2 className="text-white/80 text-xl font-medium capitalize">+91 {user?.phone ? user.phone : '...'}</h2>
+                            <i className=" fa-solid fa-phone fa-xl basis-8"></i>
+                            <h2 className=" text-xl font-medium capitalize">
+                                {user.phone}
+                            </h2>
                         </span>
-                        <hr className="opacity-50" />
+                        <hr className="" />
                         <span className="flex gap-2 items-center">
-                            <i className="text-white/80 fa-solid fa-location-crosshairs fa-xl basis-8"></i>
-                            <h2 className="text-white/80 text-xl font-medium capitalize">{user?.address ? user.address : '...'}</h2>
+                            <i className=" fa-solid fa-house fa-xl basis-8"></i>
+                            <h2 className=" text-xl font-medium capitalize">
+                                {user.locality}
+                            </h2>
                         </span>
-
+                        <hr className="" />
+                        <span className="flex gap-2 items-center">
+                            <i className=" fa-solid fa-city fa-xl basis-8"></i>
+                            <h2 className=" text-xl font-medium capitalize">
+                                {user.city}
+                            </h2>
+                        </span>
+                        <hr className="" />
+                        <span className="flex gap-2 items-center">
+                            <i className=" fa-solid fa-location-dot fa-xl basis-8"></i>
+                            <h2 className=" text-xl font-medium capitalize">
+                                {user.state}
+                            </h2>
+                        </span>
+                        <hr className="" />
+                        <span className="flex gap-2 items-center">
+                            <i className=" fa-solid fa-earth-europe fa-xl basis-8"></i>
+                            <h2 className=" text-xl font-medium capitalize">
+                                {user.country}
+                            </h2>
+                        </span>
+                        <hr className="" />
+                        <span className="flex gap-2 items-center">
+                            <i className=" fa-solid fa-hashtag fa-xl basis-8"></i>
+                            <h2 className=" text-xl font-medium capitalize">
+                                {user.zip}
+                            </h2>
+                        </span>
+                        <hr className="" />
                     </div>
-                    <button onClick={() => setShowDialog(true)} className="absolute top-4 right-4 flex gap-2 items-center border-2 p-2 rounded-xl hover:bg-primary">
-                        <i className="text-white/80 fa-solid fa-pencil"></i>
-                        <h6>Edit</h6>
+                    <button
+                        onClick={() => setShowDialog(true)}
+                        className="absolute top-4 right-4 flex gap-2 items-center border-2 border-primary p-2 rounded-xl hover:text-white hover:bg-primary"
+                    >
+                        <i className=" fa-solid fa-pencil"></i>
+                        <h6 className="hidden sm:block">Edit</h6>
                     </button>
                 </div>
             </div>

@@ -3,7 +3,6 @@ import { Link, NavLink } from "react-router-dom";
 import useCartState from "../state/cartState";
 import useMenuState from "../state/menuState";
 import { useLocation } from 'react-router-dom';
-import supabase from "../lib/supabase/client";
 import UserDrop from "./UserDrop";
 
 const Nav: FC = () => {
@@ -15,16 +14,7 @@ const Nav: FC = () => {
     }
     const { open } = useCartState()
     const { menuOpen } = useMenuState()
-    const [user, setUser] = useState<string | null>(null)
-    useEffect(() => {
-        supabase.auth.getUser().then(({ data }) => {
-            setUser(data.user?.user_metadata.name)
-            console.log(data)
-        }).catch((error) => {
-            setUser(null)
-            console.log(error)
-        })
-    }, [])
+    
 
     return (
         <header className="border-b border-white h-[80px] px-8">
@@ -64,12 +54,10 @@ const Nav: FC = () => {
                         <i className="fa-solid fa-bag-shopping fa-lg"></i>
                         <span>Cart</span>
                     </button>
-                    {user ?
-                        <UserDrop user={user} /> :
                         <Link to={'/auth'} className="hover:text-primary delay-100 duration-300 ease-in-out flex items-center gap-2">
                             <i className="fa-solid fa-circle-user fa-lg"></i>
                             <span>Login/Register</span>
-                        </Link>}
+                        </Link>
                 </ul>
                 <button onClick={menuOpen} className="md:hidden focus:text-primary delay-100 duration-300 ease-in-out">
                     <i className="fa-solid fa-bars fa-2x"></i>
