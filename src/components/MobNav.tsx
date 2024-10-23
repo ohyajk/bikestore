@@ -2,7 +2,6 @@ import { FC } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import useMenuState from "../state/menuState"
 import { NavLink } from "react-router-dom"
-import useUserState from "../state/userState"
 
 const MobNav: FC = () => {
     const { menuStatus, menuClose } = useMenuState()

@@ -1,5 +1,4 @@
 import { FC, useRef } from "react"
-import { toast } from "react-toastify"
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 import SwiperCore from "swiper"
@@ -24,7 +23,7 @@ const Home: FC = () => {
     //     })
 
 
-    const { data, isLoading, isError } = useBikes()
+    const { data, isLoading } = useBikes()
 
     return (
         <main className="flex flex-col gap-4 sm:gap-8">

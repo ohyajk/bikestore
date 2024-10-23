@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import Spinner from "../components/Spinner"
 
 const Orders: FC = () => {
-    const { data, isLoading, error } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["orders"],
         queryFn: async () => {
             const response = await fetch(

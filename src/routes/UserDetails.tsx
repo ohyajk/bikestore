@@ -3,19 +3,6 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
 import { useMutation } from "@tanstack/react-query"
-import z from "zod"
-
-const schema = z.object({
-    name: z.string().toLowerCase().min(1, { message: "Name cannot be empty" }),
-    phone: z
-        .string()
-        .min(10, { message: "Phone Number should be 10 digits" })
-        .max(10),
-    address: z
-        .string()
-        .toLowerCase()
-        .min(1, { message: "Address cannot be empty" }),
-})
 
 const UserDetails: FC = () => {
     const navigate = useNavigate()

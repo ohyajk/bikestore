@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { Link, NavLink } from "react-router-dom";
 import useCartState from "../state/cartState";
 import useMenuState from "../state/menuState";
@@ -11,7 +11,7 @@ const Nav: FC = () => {
     const hiddenRoutes = ['/auth', '/verify', '/userDetails'];
 
     if (hiddenRoutes.includes(location.pathname)) {
-        return null; // Hide the component for specific routes
+        return null; 
     }
     const { open } = useCartState()
     const { menuOpen } = useMenuState()

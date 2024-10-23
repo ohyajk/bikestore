@@ -1,9 +1,7 @@
 import { FC, useState } from "react"
 import MultiRangeSlider from "multi-range-slider-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { AnimatePresence } from "framer-motion"
 import { Bike } from "../types/types"
-import { useQuery } from "@tanstack/react-query"
-import { Link } from "react-router-dom"
 import useBikes from "../lib/bikeFetcher"
 import BikeCard from "../components/BikeCard"
 
@@ -28,7 +26,6 @@ const Bikes: FC = () => {
         set_maxValue(e.maxValue)
     }
 
-    const MotionLink = motion(Link)
 
     return (
         <main className=" grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 screen-height">
