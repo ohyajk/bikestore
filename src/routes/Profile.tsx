@@ -33,7 +33,7 @@ const Profile: FC = () => {
 
     return (
         <>
-            <div className="h-full flex flex-col justify-center items-center ">
+            <div className="screen-height flex flex-col justify-center items-center ">
                 <div className="relative md:min-w-[420px] bg-white rounded-2xl shadow-md p-4 sm:p-8 flex flex-col justify-center items-center gap-4 border-2 border-primary">
                     <div
                         className="h-[150px] w-[150px] rounded-full flex justify-center items-center text-white uppercase text-6xl font-bold [text-shadow:_2px_2px_0_rgb(0_0_0_/_80%)]"

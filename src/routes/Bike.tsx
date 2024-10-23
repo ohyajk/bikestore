@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 // import { Bike } from '../types/types';
 import { useQuery } from "@tanstack/react-query"
@@ -13,27 +13,32 @@ import useCartState from "../state/cartState"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { useRef } from "react"
 import "swiper/css"
+import axios from "axios"
 
 const Bike: FC = () => {
     const { url } = useParams()
+    const [itemAdded, setItemAdded] = useState(false)
     const { addItem, items } = useCartItemState()
     const { open } = useCartState()
     const { data, isLoading, isError } = useQuery({
         queryKey: ["Bike"],
         queryFn: async () => {
-            const fetcher = await fetch(`http://localhost:3000/api/bike/${url}`)
-            const data = await fetcher.json()
-            console.log(data)
-            return data
+            const res = await axios.get(`/bike/${url}`)
+            return res.data
         },
     })
+
+    useEffect(() => {
+        if (data && items.length) {
+            const itemExists = items.some(item => item.id === data.id)
+            setItemAdded(itemExists)
+        }
+    }, [data, items])
 
     const addItemToCart = (data: Bike) => {
         addItem(data)
         open()
     }
-
-    console.log(data, isLoading, isError)
 
     const swiperRef = useRef(null)
 
@@ -54,7 +59,7 @@ const Bike: FC = () => {
 
     if (data) {
         return (
-            <main className=" flex items-center w-full">
+            <main className="screen-height h-full flex items-center w-full">
                 <AnimatePresence>
                     <motion.div
                         initial={{ opacity: 0, scale: 0 }}
@@ -73,7 +78,7 @@ const Bike: FC = () => {
                             type: "spring",
                             transition: { duration: 0.3, delay: 0.2 },
                         }}
-                        className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 h-fit w-full rounded-lg  bg-white shadow-xl p-4 "
+                        className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 h-fit w-full  p-4 "
                     >
                         <div className="swiper-container  ">
                             <Swiper
@@ -150,11 +155,11 @@ const Bike: FC = () => {
                                         )
                                     }
                                 )}
-                                <span className="mr-2 ml-3 rounded bg-primary px-2.5 py-0.5 text-xs font-semibold">
+                                <span className="mr-2 ml-3 rounded text-white bg-primary px-2.5 py-0.5 text-xs font-semibold">
                                     {data.rating}.0
                                 </span>
                             </div>
-                            {items.includes(data) === false ? (
+                            {itemAdded === false ? (
                                 <button
                                     onClick={() => addItemToCart(data)}
                                     className="w-fit flex gap-2 items-center justify-center rounded-md bg-primary text-white px-5 py-2.5 text-center text-sm font-medium  hover:bg-prime2 focus:outline-none focus:ring-4 focus:ring-blue-300"

@@ -23,7 +23,7 @@ const Layout: FC = () => {
                 <Nav />
                 <MobNav />
                 <Cart />
-                <main className="max-w-7xl mx-auto px-4 pt-8 screen-height screen-height">
+                <main className="max-w-7xl mx-auto px-4 pt-8">
                     <Routes>
                         <Route path="*" element={<NotFound />} />
                         <Route path="/" element={<Home />} />

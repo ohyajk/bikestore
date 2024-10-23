@@ -1,15 +1,18 @@
-import { FC } from "react"
+import { FC, useRef } from "react"
 import { toast } from "react-toastify"
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
+import SwiperCore from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay } from "swiper/modules"
-
 import "swiper/css"
-import { useQuery } from "@tanstack/react-query"
 import BikeCard from "../components/BikeCard"
+import useBikes from "../lib/bikeFetcher"
 
 const Home: FC = () => {
+    const swiperRefMtb = useRef<SwiperCore>()
+    const swiperRefCtb = useRef<SwiperCore>()
+    const swiperRefCmb = useRef<SwiperCore>()
     // const notify = () =>
     //     toast.success("Wow so easy!", {
     //         style: {
@@ -20,14 +23,8 @@ const Home: FC = () => {
     //         },
     //     })
 
-    const { data, isLoading, isError } = useQuery({
-        queryKey: ["allBikesHome"],
-        queryFn: async () => {
-            const fetcher = await fetch("http://localhost:3000/api/bike/all")
-            const data = await fetcher.json()
-            return data
-        },
-    })
+
+    const { data, isLoading, isError } = useBikes()
 
     return (
         <main className="flex flex-col gap-4 sm:gap-8">
@@ -38,7 +35,7 @@ const Home: FC = () => {
                     duration: 0.6,
                     ease: "easeInOut",
                 }}
-                className="bg-white p-8 rounded-lg shadow-lg grid lg:grid-cols-2 gap-4 sm:gap-8"
+                className="p-8 grid lg:grid-cols-2 gap-4 sm:gap-8"
             >
                 <div className=" flex flex-col gap-4 sm:gap-8 justify-center">
                     <motion.span
@@ -49,7 +46,7 @@ const Home: FC = () => {
                             duration: 0.5,
                             ease: "easeInOut",
                         }}
-                        className="bg-primary px-4 py-2 rounded-lg text-white w-fit"
+                        className="bg-primary px-4 py-2 text-white w-fit"
                     >
                         <h6 className="font-bold text-sm sm:text-base">
                             Latest Arrival
@@ -93,7 +90,7 @@ const Home: FC = () => {
                                 duration: 0.5,
                                 ease: "linear",
                             }}
-                            className="px-4 py-2 bg-primary rounded-lg text-lg font-bold text-white w-fit hover:bg-prime2 transform transition-transform duration-300"
+                            className="px-4 py-2 bg-primary text-lg font-bold text-white w-fit hover:bg-prime2 transform transition-transform duration-300"
                         >
                             View More
                         </motion.button>
@@ -116,27 +113,41 @@ const Home: FC = () => {
                     />
                 </motion.div>
             </motion.div>
-            <section className="bg-white px-4 py-2 rounded-lg shadow-lg">
-                <span className="text-lg sm:text-2xl font-bold text-primary flex items-center gap-2">
-                    <h2>Mountain Bikes</h2>
-                    <i className="fa-solid fa-angles-right"></i>
-                </span>
+            <section className=" px-4 py-2">
+                <div className="flex items-center justify-between">
+                    <span className="text-lg sm:text-2xl font-bold text-primary flex items-center gap-2">
+                        <h2>Mountain Bikes</h2>
+                        <i className="fa-solid fa-angles-right"></i>
+                    </span>
+                    <span className="flex items-center gap-4">
+                        <button onClick={() => swiperRefMtb.current?.slidePrev()} className=" text-primary active:scale-110">
+                            <i className="fa-solid fa-circle-chevron-left fa-2x "></i>
+                        </button>
+                        <button onClick={() => swiperRefMtb.current?.slideNext()} className=" text-primary active:scale-110">
+                            <i className="fa-solid fa-circle-chevron-right fa-2x "></i>
+                        </button>
+                    </span>
+                </div>
             </section>
             <section>
                 <Swiper
                     modules={[Autoplay]}
                     spaceBetween={50}
-                    slidesPerView={3}
+                    slidesPerView={1}
+                    onBeforeInit={(swiper) => {
+                        swiperRefMtb.current = swiper;
+                    }}
+
                     breakpoints={{
                         0: {
                             slidesPerView: 1,
                             spaceBetween: 20,
                         },
-                        768: {
+                        880: {
                             slidesPerView: 2,
                             spaceBetween: 30,
                         },
-                        1024: {
+                        1280: {
                             slidesPerView: 3,
                             spaceBetween: 40,
                         },
@@ -156,7 +167,7 @@ const Home: FC = () => {
                                     <div
                                         role="status"
                                         key={`skeleton+${i}`}
-                                        className="h-[390px] w-full gradient-background rounded-lg shadow-lg"
+                                        className="h-[390px] w-full gradient-background"
                                     ></div>
                                 </SwiperSlide>
                             )
@@ -172,28 +183,42 @@ const Home: FC = () => {
                             )
                         })}
                 </Swiper>
+
             </section>
-            <section className="bg-white px-4 py-2 rounded-lg shadow-lg">
-                <span className="text-lg sm:text-2xl font-bold text-primary flex items-center gap-2">
-                    <h2>City Bikes</h2>
-                    <i className="fa-solid fa-angles-right"></i>
-                </span>
+            <section className=" px-4 py-2">
+            <div className="flex items-center justify-between">
+                    <span className="text-lg sm:text-2xl font-bold text-primary flex items-center gap-2">
+                        <h2>City Bikes</h2>
+                        <i className="fa-solid fa-angles-right"></i>
+                    </span>
+                    <span className="flex items-center gap-4">
+                        <button onClick={() => swiperRefCtb.current?.slidePrev()} className=" text-primary active:scale-110">
+                            <i className="fa-solid fa-circle-chevron-left fa-2x "></i>
+                        </button>
+                        <button onClick={() => swiperRefCtb.current?.slideNext()} className=" text-primary active:scale-110">
+                            <i className="fa-solid fa-circle-chevron-right fa-2x "></i>
+                        </button>
+                    </span>
+                </div>
             </section>
             <section>
                 <Swiper
                     modules={[Autoplay]}
                     spaceBetween={50}
-                    slidesPerView={3}
+                    slidesPerView={1}
+                    onBeforeInit={(swiper) => {
+                        swiperRefCtb.current = swiper;
+                    }}
                     breakpoints={{
                         0: {
                             slidesPerView: 1,
                             spaceBetween: 20,
                         },
-                        768: {
+                        880: {
                             slidesPerView: 2,
                             spaceBetween: 30,
                         },
-                        1024: {
+                        1280: {
                             slidesPerView: 3,
                             spaceBetween: 40,
                         },
@@ -213,7 +238,7 @@ const Home: FC = () => {
                                     <div
                                         role="status"
                                         key={`skeleton+${i}`}
-                                        className="h-[390px] w-full gradient-background rounded-lg shadow-lg"
+                                        className="h-[390px] w-full gradient-background"
                                     ></div>
                                 </SwiperSlide>
                             )
@@ -229,27 +254,41 @@ const Home: FC = () => {
                         })}
                 </Swiper>
             </section>
-            <section className="bg-white px-4 py-2 rounded-lg shadow-lg">
-                <span className="text-lg sm:text-2xl font-bold text-primary flex items-center gap-2">
-                    <h2>Commuter Bikes</h2>
-                    <i className="fa-solid fa-angles-right"></i>
-                </span>
+            <section className=" px-4 py-2">
+            <div className="flex items-center justify-between">
+                    <span className="text-lg sm:text-2xl font-bold text-primary flex items-center gap-2">
+                        <h2>Commuter Bikes</h2>
+                        <i className="fa-solid fa-angles-right"></i>
+                    </span>
+                    <span className="flex items-center gap-4">
+                        <button onClick={() => swiperRefCmb.current?.slidePrev()} className=" text-primary active:scale-110">
+                            <i className="fa-solid fa-circle-chevron-left fa-2x "></i>
+                        </button>
+                        <button onClick={() => swiperRefCmb.current?.slideNext()} className=" text-primary active:scale-110">
+                            <i className="fa-solid fa-circle-chevron-right fa-2x "></i>
+                        </button>
+                    </span>
+                </div>
             </section>
             <section>
                 <Swiper
                     modules={[Autoplay]}
+
                     spaceBetween={50}
-                    slidesPerView={3}
+                    slidesPerView={1}
+                    onBeforeInit={(swiper) => {
+                        swiperRefCmb.current = swiper;
+                    }}
                     breakpoints={{
                         0: {
                             slidesPerView: 1,
                             spaceBetween: 20,
                         },
-                        768: {
+                        880: {
                             slidesPerView: 2,
                             spaceBetween: 30,
                         },
-                        1024: {
+                        1280: {
                             slidesPerView: 3,
                             spaceBetween: 40,
                         },
@@ -269,7 +308,7 @@ const Home: FC = () => {
                                     <div
                                         role="status"
                                         key={`skeleton+${i}`}
-                                        className="h-[390px] w-full gradient-background rounded-lg shadow-lg"
+                                        className="h-[390px] w-full gradient-background"
                                     ></div>
                                 </SwiperSlide>
                             )

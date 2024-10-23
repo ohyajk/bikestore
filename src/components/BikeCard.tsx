@@ -5,7 +5,7 @@ const BikeCard: FC = (b: any) => {
     return (
         <Link
             to={`/bike/${b.url}`}
-            className="relative flex h-fit w-full  flex-col overflow-hidden rounded-lg border-2 border-white bg-white shadow-lg cursor-pointer hover:border-primary "
+            className="relative flex h-fit w-full  flex-col overflow-hidden rounded-lg border-2 border-bg2/30 bg-white shadow-lg cursor-pointer hover:border-primary "
         >
             <span className="relative mx-3 mt-3 flex h-60 justify-center overflow-hidden rounded-xl bg-white">
                 <img className="object-contain " src={b.image} alt={b.name} />
@@ -43,7 +43,7 @@ const BikeCard: FC = (b: any) => {
                                 </svg>
                             )
                         })}
-                        <span className="mr-2 ml-3 rounded bg-primary px-2.5 py-0.5 text-xs font-semibold">
+                        <span className="mr-2 ml-3 rounded text-white bg-primary px-2.5 py-0.5 text-xs font-semibold">
                             {b.rating}.0
                         </span>
                     </div>

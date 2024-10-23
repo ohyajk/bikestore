@@ -13,13 +13,12 @@ const CardCart: FC<CardCartProps> = ({ id, name, image, price }) => {
     const { removeItem } = useCartItemState()
 
     return (
-        <div className='flex gap-4 justify-start items-center w-full border p-4 rounded-xl bg-gray-900'>
+        <div className='flex gap-4 justify-start items-center w-full border p-4 rounded-xl '>
             <img src={image} className='h-20 w-32 bg-white rounded-xl' />
             <div className='flex flex-col gap-2'>
                 <h1 className='text-2xl font-semibold duration-300 delay-100 hover:text-primary'>{name}</h1>
                 <div className='flex items-center gap-2'>
-                    <h2 className=' rounded-full font-semibold bg-primary w-fit px-4 py-1'>{price}$</h2>
-                    {/* <h2 className=' rounded-full font-semibold bg-prime2 w-fit px-4 py-1'>{size}Inch</h2> */}
+                    <h2 className=' rounded-full font-semibold text-white bg-primary w-fit px-4 py-1'>{price}$</h2>
                 </div>
             </div>
             <button onClick={() => removeItem(id)} className='ml-auto'>

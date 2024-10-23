@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { Bike } from '../types/types'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface cartState {
   items: Bike[],
@@ -7,10 +8,17 @@ interface cartState {
   removeItem: (id: string) => void
 }
 
-const useCartItemState = create<cartState>()((set) => ({
+const useCartItemState = create<cartState>()(
+persist<cartState>((set) => ({
   items: [],
-    addItem: (data) => set((state) => ({ items: [...state.items, data] })),
-    removeItem: (id) => set((state) => ({ items: state.items.filter((item) => item.id !== id) })),
-}))
+    addItem: (data: Bike) => set((state) => ({ items: [...state.items, data] })),
+    removeItem: (id: string) => set((state) => ({ items: state.items.filter((item) => item.id !== id) })),
+}),
+{
+  name: 'cart-item-storage',
+  storage: createJSONStorage(() => localStorage)
+}
+)
+)
 
 export default useCartItemState

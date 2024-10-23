@@ -22,7 +22,7 @@ const Verify: FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true)
-        const fetcher = await fetch("http://localhost:3000/api/login", {
+        const fetcher = await fetch("http://localhost:9000/api/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

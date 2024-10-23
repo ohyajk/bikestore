@@ -1,7 +1,6 @@
 import { FC, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { useNavigate } from "react-router"
-
 import useEmailState from "../state/authMailState"
 import { toast } from "react-toastify"
 
@@ -14,7 +13,7 @@ const Auth: FC = () => {
         e.preventDefault()
         setLoading(true)
         setEmailStore(email)
-        const fetcher = await fetch("http://localhost:3000/api/signup", {
+        const fetcher = await fetch("http://localhost:9000/api/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

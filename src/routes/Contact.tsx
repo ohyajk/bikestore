@@ -35,7 +35,7 @@ const Contact: FC = () => {
     }
 
     return (
-        <div className="h-full flex justify-center mb-6">
+        <div className="screen-height flex justify-center ">
             <div className="max-w-2xl h-fit w-full mx-4 p-6 bg-white rounded-xl">
                 <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
                 <form

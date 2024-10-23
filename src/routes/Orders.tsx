@@ -8,7 +8,7 @@ const Orders: FC = () => {
         queryKey: ["orders"],
         queryFn: async () => {
             const response = await fetch(
-                "http://localhost:3000/api/order/all",
+                "http://localhost:9000/api/order/all",
                 {
                     method: "GET",
                     headers: {
@@ -24,7 +24,7 @@ const Orders: FC = () => {
     })
 
     return (
-        <main className="h-full w-full">
+        <main className="screen-height  w-full">
             <section className="h-full flex flex-col gap-4 bg-white p-4 md:p-8 rounded-lg">
                 <h1 className="text-3xl font-bold mb-4">All Orders</h1>
                 {isLoading && <Spinner />}

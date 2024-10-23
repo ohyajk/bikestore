@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Bike } from "../types/types"
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
+import useBikes from "../lib/bikeFetcher"
+import BikeCard from "../components/BikeCard"
 
 const Bikes: FC = () => {
     const [minValue, set_minValue] = useState(5000)
@@ -16,15 +18,8 @@ const Bikes: FC = () => {
     const [priceByL2H, setPriceByL2H] = useState(false)
     const [priceByH2L, setPriceByH2L] = useState(false)
 
-    const { data, isLoading, isError } = useQuery({
-        queryKey: ["allBikes"],
-        queryFn: async () => {
-            const fetcher = await fetch("http://localhost:3000/api/bike/all")
-            const data = await fetcher.json()
-            console.log(data)
-            return data
-        },
-    })
+    const { data, isLoading, isError } = useBikes()
+
 
     console.log(data, isLoading, isError)
 
@@ -36,7 +31,7 @@ const Bikes: FC = () => {
     const MotionLink = motion(Link)
 
     return (
-        <main className=" grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 ">
+        <main className=" grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 screen-height">
             <section className="flex flex-col gap-4 sm:grid grid-cols-2 lg:grid-cols-1 sm:gap-8 lg:gap-4 bg-white shadow-lg p-4 rounded-lg  h-fit">
                 <div className="col-span-2 lg:col-span-1">
                     <h2 className="text-2xl ">Filter Results</h2>
@@ -283,83 +278,7 @@ const Bikes: FC = () => {
                         )
                         .map((p: Bike, i: Number) => {
                             return (
-                                <MotionLink
-                                    to={`/bike/${p.url}`}
-                                    initial={{ opacity: 0, scale: 0 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{
-                                        delay: 0.2,
-                                        duration: 0.7,
-                                        type: "spring",
-                                        bounce: 0.4,
-                                        ease: "easeInOut",
-                                    }}
-                                    exit={{
-                                        opacity: 0,
-                                        scale: 0,
-                                        animation: "ease-in-out",
-                                        type: "spring",
-                                        transition: {
-                                            duration: 0.3,
-                                            delay: 0.2,
-                                        },
-                                    }}
-                                    className="relative flex h-fit w-full  flex-col overflow-hidden rounded-lg border-2 border-white bg-white shadow-lg cursor-pointer hover:border-primary "
-                                    key={`key${i}`}
-                                >
-                                    <span className="relative mx-3 mt-3 flex h-60 justify-center overflow-hidden rounded-xl bg-white">
-                                        <img
-                                            className="object-contain "
-                                            src={p.image}
-                                            alt="product image"
-                                        />
-                                        <span className="absolute top-0 left-0 m-2 rounded-full bg-primary text-white px-2 text-center text-sm font-medium">
-                                            {p.discount}% OFF
-                                        </span>
-                                    </span>
-                                    <div className="mt-4 px-5 pb-5">
-                                        <h5 className="text-xl tracking-tight font-medium">
-                                            {p.name}
-                                        </h5>
-                                        <div className="mt-2 mb-5 flex items-center justify-between">
-                                            <p>
-                                                <span className="text-3xl font-bold">
-                                                    &#8377;{p.price}
-                                                </span>
-                                                <span className="text-sm line-through">
-                                                    {" "}
-                                                    &#x20B9;{p.originalPrice}
-                                                </span>
-                                            </p>
-                                            <div className="flex items-center">
-                                                {Array.from({
-                                                    length: p.rating,
-                                                }).map((_, i: Number) => {
-                                                    return (
-                                                        <svg
-                                                            key={`key${i}`}
-                                                            aria-hidden="true"
-                                                            className="h-5 w-5 text-primary"
-                                                            fill="currentColor"
-                                                            viewBox="0 0 20 20"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                                        </svg>
-                                                    )
-                                                })}
-                                                <span className="mr-2 ml-3 rounded bg-primary px-2.5 py-0.5 text-xs font-semibold">
-                                                    {p.rating}.0
-                                                </span>
-                                            </div>
-                                        </div>
-                                        {/* <a href="#" className="flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-center text-sm font-medium hover:bg-prime2 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                                </svg>
-                                                Add to cart</a> */}
-                                    </div>
-                                </MotionLink>
+                                <BikeCard key={`card-${i}`} {...p} />
                             )
                         })}
                 </AnimatePresence>

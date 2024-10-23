@@ -22,23 +22,27 @@ const Cart: FC = () => {
                     animate={{ x: 0 }}
                     transition={{ duration: 0.5, type: 'spring' }}
                     exit={{ x: 700 }}
-                    className='fixed top-0 right-0 h-screen sm:w-[70%] md:w-[576px] border-l border-primary bg-secondary text-white p-4 z-50'
+                    className='fixed top-0 right-0 h-screen sm:w-[70%] md:w-[576px] border-l border-black bg-secondary p-4 z-50 flex flex-col justify-between'
                 >
-                    <div className='flex items-center justify-between pb-10'>
-                        <button onClick={close} className='focus:animate-spin duration-300 delay-100 hover:text-primary'>
-                            <i className="fa-solid fa-xmark fa-2x"></i>
-                        </button>
-                        <h2 className='text-2xl font-semibold border-b-2'>Cart</h2>
-                        <span className='opacity-0'>op</span>
+                    <div>
+                        <div className='flex items-center justify-between pb-10'>
+                            <button onClick={close} className='focus:animate-spin duration-300 delay-100 hover:text-primary'>
+                                <i className="fa-solid fa-xmark fa-2x"></i>
+                            </button>
+                            <h2 className='text-3xl font-semibold border-b-2 border-primary'>Cart</h2>
+                            <span className='opacity-0'>op</span>
+                        </div>
+                        {
+                            items.length === 0 ?
+                                <EmptyCart /> :
+                                <div className='flex flex-col gap-4'>
+                                    {items.map((item) => <CardCart id={item.id} name={item.name} image={item.image} price={item.price} />)}
+                                </div>
+                        }
                     </div>
-                    {
-                        items.length === 0 ?
-                            <EmptyCart /> :
-                            <div className='flex flex-col gap-4'>
-                                {items.map((item) => <CardCart id={item.id} name={item.name} image={item.image} price={item.price} />)}
-                            </div>
-                    }
-
+                    <div className=''>
+                        <button className='w-full bg-primary text-white rounded-lg py-2 font-semibold'>Checkout</button>
+                    </div>
                 </motion.div>
             }
         </AnimatePresence>

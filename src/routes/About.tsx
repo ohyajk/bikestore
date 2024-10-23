@@ -2,7 +2,7 @@ import { FC } from "react"
 
 const About: FC = () => {
     return (
-        <div className=" mx-4">
+        <div className="screen-height mx-4">
             <h1 className=" text-3xl font-bold mb-4 text-center">
                 About BikeStore
             </h1>
