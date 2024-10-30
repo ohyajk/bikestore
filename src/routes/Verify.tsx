@@ -23,81 +23,82 @@ const Verify: FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true)
-       
-        const fetcher = await axios.post(
-            '/login',
-            { email, otp }, 
-            {
-                withCredentials: true,  
-                headers: {
-                    'Content-Type': 'application/json',  
-                },
+
+        try {
+            const fetcher = await axios.post(
+                '/login',
+                { email, otp }, 
+                {
+                    withCredentials: true,  
+                    headers: {
+                        'Content-Type': 'application/json',  
+                    },
+                }
+            );
+        
+            const data = fetcher.data;
+            setUserStore(data);
+
+            if (data.isOnboardingComplete == true) {
+                navigate("/profile")
+                toast.success("Successfully Logged In !", {
+                    style: {
+                        background: "#2a2a2a",
+                        borderWidth: 1,
+                        borderColor: "#FFF",
+                        boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
+                    },
+                })
+                clearEmailStore()
+            } else if (data.isOnboardingComplete == false) {
+                navigate("/details")
+                toast.success("Account Verified Successfully !", {
+                    style: {
+                        background: "#2a2a2a",
+                        borderWidth: 1,
+                        borderColor: "#FFF",
+                        boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
+                    },
+                })
+                clearEmailStore()
             }
-        )
-
-        const data = fetcher.data
-
-        setUserStore(data)
-
-        if (fetcher.status == 400) {
-            toast.error("Invalid OTP", {
-                style: {
-                    background: "#2a2a2a",
-                    borderWidth: 1,
-                    borderColor: "#FFF",
-                    boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
-                },
-            })
-            setLoading(false)
+            
+        } catch (error: any) {
+            if (error.response && error.response.status === 400) {
+                toast.error("Invalid OTP", {
+                    style: {
+                        background: "#2a2a2a",
+                        borderWidth: 1,
+                        borderColor: "#FFF",
+                        boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
+                    },
+                });
+            } else if(error.response && error.response.status === 404) {
+                console.error("Unexpected error:", error);
+                toast.error("Invalid Email, Please Signup First.", {
+                    style: {
+                        background: "#2a2a2a",
+                        borderWidth: 1,
+                        borderColor: "#FFF",
+                        boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
+                    },
+                });
+            }else{
+                toast.error("Something went wrong !", {
+                    style: {
+                        background: "#2a2a2a",
+                        borderWidth: 1,
+                        borderColor: "#FFF",
+                        boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
+                    },
+                })
+            }
+        } finally {
+            setLoading(false);
         }
+        
 
-        if (fetcher.status == 404) {
-            toast.error("Invalid Email, Please Signup First.", {
-                style: {
-                    background: "#2a2a2a",
-                    borderWidth: 1,
-                    borderColor: "#FFF",
-                    boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
-                },
-            })
-            setLoading(false)
-        }
-
-        if (fetcher.status == 500) {
-            toast.error("Something went wrong !", {
-                style: {
-                    background: "#2a2a2a",
-                    borderWidth: 1,
-                    borderColor: "#FFF",
-                    boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
-                },
-            })
-            setLoading(false)
-        }
-
-        if (data.isOnboardingComplete == true) {
-            navigate("/profile")
-            toast.success("Successfully Logged In !", {
-                style: {
-                    background: "#2a2a2a",
-                    borderWidth: 1,
-                    borderColor: "#FFF",
-                    boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
-                },
-            })
-            clearEmailStore()
-        } else if (data.isOnboardingComplete == false) {
-            navigate("/details")
-            toast.success("Account Verified Successfully !", {
-                style: {
-                    background: "#2a2a2a",
-                    borderWidth: 1,
-                    borderColor: "#FFF",
-                    boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
-                },
-            })
-            clearEmailStore()
-        }
+       
 
         // if (fetcher.status == 200) {
         // } else if (fetcher.status == 201) {
@@ -119,7 +120,7 @@ const Verify: FC = () => {
         //             boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
         //         },
         //     })
-        setLoading(false)
+        // setLoading(false)
         // }
     }
 
