@@ -14,6 +14,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { useRef } from "react"
 import "swiper/css"
 import axios from "axios"
+import { toast } from "react-toastify"
 
 const Bike: FC = () => {
     const { url } = useParams()
@@ -29,13 +30,17 @@ const Bike: FC = () => {
     })
 
     useEffect(() => {
-        if (data && items.length) {
+        if (data) {
             const itemExists = items.some(item => item.id === data.id)
             setItemAdded(itemExists)
         }
     }, [data, items])
 
     const addItemToCart = (data: Bike) => {
+        if(items.length > 2) {
+            toast.error("You can only add 3 Bikes per order")
+            return
+        } 
         addItem(data)
         open()
     }
@@ -131,11 +136,11 @@ const Bike: FC = () => {
                             </h5>
                             <div>
                                 <span className="text-3xl font-bold ">
-                                    &#8377;{data.price}
+                                    ${data.price}
                                 </span>
                                 <span className="text-sm  line-through">
                                     {" "}
-                                    &#x20B9;{data.originalPrice}
+                                    ${data.originalPrice}
                                 </span>
                             </div>
                             <div className="flex items-center">

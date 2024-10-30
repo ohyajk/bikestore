@@ -1,7 +1,8 @@
 import { FC } from "react"
 import { Link } from "react-router-dom"
+import { Bike } from "../types/types"
 
-const BikeCard: FC = (b: any) => {
+const BikeCard: FC<Bike> = (b: Bike) => {
     return (
         <Link
             to={`/bike/${b.url}`}
@@ -18,11 +19,11 @@ const BikeCard: FC = (b: any) => {
                 <div className="mt-2 mb-5 flex items-center justify-between">
                     <p>
                         <span className="text-3xl font-bold">
-                            &#8377;{b.price}
+                            ${b.price}
                         </span>
                         <span className="text-sm line-through">
                             {" "}
-                            &#x20B9;
+                            $
                             {b.originalPrice}
                         </span>
                     </p>

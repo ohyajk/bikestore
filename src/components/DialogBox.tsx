@@ -3,6 +3,7 @@ import { FC, useState } from "react"
 import { toast } from "react-toastify"
 import z from "zod"
 import useUserState from "../state/userState"
+import axios from "axios"
 
 const schema = z.object({
     name: z.string().toLowerCase().min(1, { message: "Name cannot be empty" }),
@@ -21,14 +22,14 @@ type DialogBoxProps = {
 }
 
 const DialogBox: FC<DialogBoxProps> = ({ setShowDialog }) => {
-    const { setUserStore } = useUserState()
-    const [name, setName] = useState("")
-    const [phone, setPhone] = useState("")
-    const [city, setCity] = useState("")
-    const [country, setCountry] = useState("")
-    const [zip, setZip] = useState("")
-    const [state, setState] = useState("")
-    const [locality, setLocality] = useState("")
+    const { user, setUserStore } = useUserState()
+    const [name, setName] = useState(user?.name)
+    const [phone, setPhone] = useState(user?.phone)
+    const [city, setCity] = useState(user?.city)
+    const [country, setCountry] = useState(user?.country)
+    const [zip, setZip] = useState(user?.zip)
+    const [state, setState] = useState(user?.state)
+    const [locality, setLocality] = useState(user?.locality)
 
     const { mutateAsync, isPending } = useMutation({
         mutationFn: async () => {
@@ -55,12 +56,8 @@ const DialogBox: FC<DialogBoxProps> = ({ setShowDialog }) => {
                 .catch((error) => {
                     throw new Error(error.errors[0].message)
                 })
-            await fetch("http://localhost:3000/api/user/update", {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
+            await axios.put("/user/update",
+                {
                     name,
                     phone,
                     city,
@@ -68,17 +65,23 @@ const DialogBox: FC<DialogBoxProps> = ({ setShowDialog }) => {
                     zip,
                     state,
                     locality,
-                }),
-                credentials: "include",
-            })
-            const fetcher = await fetch("http://localhost:3000/api/user", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
                 },
-                credentials: "include",
-            })
-            const data = await fetcher.json()
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            )
+            const fetcher = await axios.get("/user",
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            )
+            const data = await fetcher.data
             setUserStore(data)
         },
         onError: (error) => {
@@ -115,6 +118,7 @@ const DialogBox: FC<DialogBoxProps> = ({ setShowDialog }) => {
                         <i className="absolute fa-solid fa-user left-4"></i>
                         <input
                             type="text"
+                            value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="John Doe"
                             className="  border border-primary outline-none  w-full py-2 pl-10 pr-4 rounded-lg"
@@ -125,6 +129,7 @@ const DialogBox: FC<DialogBoxProps> = ({ setShowDialog }) => {
                         <input
                             type="tel"
                             maxLength={10}
+                            value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                             placeholder="1234512345"
                             className="  border border-primary outline-none  w-full py-2 pl-10 pr-4 rounded-lg"
@@ -134,6 +139,7 @@ const DialogBox: FC<DialogBoxProps> = ({ setShowDialog }) => {
                         <i className="absolute fa-solid fa-house left-4"></i>
                         <input
                             type="text"
+                            value={locality}
                             onChange={(e) => setLocality(e.target.value)}
                             placeholder="your locality"
                             className="  border border-primary outline-none  w-full py-2 pl-10 pr-4 rounded-lg"
@@ -143,6 +149,7 @@ const DialogBox: FC<DialogBoxProps> = ({ setShowDialog }) => {
                         <i className="absolute fa-solid fa-city left-4"></i>
                         <input
                             type="text"
+                            value={city}
                             onChange={(e) => setCity(e.target.value)}
                             placeholder="your city"
                             className="  border border-primary outline-none  w-full py-2 pl-10 pr-4 rounded-lg"
@@ -152,6 +159,7 @@ const DialogBox: FC<DialogBoxProps> = ({ setShowDialog }) => {
                         <i className="absolute fa-solid fa-location-dot left-4"></i>
                         <input
                             type="text"
+                            value={state}
                             onChange={(e) => setState(e.target.value)}
                             placeholder="your state"
                             className="  border border-primary outline-none  w-full py-2 pl-10 pr-4 rounded-lg"
@@ -161,6 +169,7 @@ const DialogBox: FC<DialogBoxProps> = ({ setShowDialog }) => {
                         <i className="absolute fa-solid fa-earth-europe left-4"></i>
                         <input
                             type="text"
+                            value={country}
                             onChange={(e) => setCountry(e.target.value)}
                             placeholder="your country"
                             className="  border border-primary outline-none  w-full py-2 pl-10 pr-4 rounded-lg"
@@ -170,6 +179,7 @@ const DialogBox: FC<DialogBoxProps> = ({ setShowDialog }) => {
                         <i className="absolute fa-solid fa-hashtag left-4"></i>
                         <input
                             type="text"
+                            value={zip}
                             onChange={(e) => setZip(e.target.value)}
                             placeholder="your zip/pincode"
                             className="  border border-primary outline-none  w-full py-2 pl-10 pr-4 rounded-lg"

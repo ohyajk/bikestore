@@ -5,6 +5,7 @@ import { useNavigate } from "react-router"
 import useEmailState from "../state/authMailState"
 import { toast } from "react-toastify"
 import useUserState from "../state/userState"
+import axios from "axios"
 
 const Verify: FC = () => {
     useEffect(() => {
@@ -22,16 +23,19 @@ const Verify: FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true)
-        const fetcher = await fetch("http://localhost:9000/api/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, otp }),
-            credentials: "include",
-        })
+       
+        const fetcher = await axios.post(
+            '/login',
+            { email, otp }, 
+            {
+                withCredentials: true,  
+                headers: {
+                    'Content-Type': 'application/json',  
+                },
+            }
+        )
 
-        const data = await fetcher.json()
+        const data = fetcher.data
 
         setUserStore(data)
 

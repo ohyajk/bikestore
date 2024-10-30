@@ -1,18 +1,41 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { motion, AnimatePresence } from "framer-motion"
 import Lottie from "lottie-react";
 import emptyBox from "../json/emptyBox.json";
 import useCartState from '../state/cartState';
 import useCartItemState from '../state/cartItemState';
 import CardCart from './CardCart';
+import { toast } from 'react-toastify';
+import useUserState from '../state/userState';
+import { useNavigate } from 'react-router';
 // import { Link } from 'react-router-dom';
 
 
 
 const Cart: FC = () => {
+    const navigate = useNavigate()
 
     const { status, close } = useCartState()
     const { items } = useCartItemState()
+    const {user} = useUserState()
+
+    const [subtotal, setSubtotal] = useState(0)
+
+
+    useEffect(() => {
+        const totalprice = items.reduce((t, i) => t + i.price, 0);
+        setSubtotal(totalprice)
+    }, [items])
+
+    const goCheckout = () => {
+        if(!user.email){
+            toast.error('Please login to continue')
+            return
+        }
+        close()
+        navigate('/checkout')
+    }
+
     return (
         <AnimatePresence>
             {
@@ -40,9 +63,16 @@ const Cart: FC = () => {
                                 </div>
                         }
                     </div>
-                    <div className=''>
-                        <button className='w-full bg-primary text-white rounded-lg py-2 font-semibold'>Checkout</button>
-                    </div>
+                    {subtotal > 0 &&
+                        <div className='flex flex-col gap-2'>
+                            <span className='flex justify-between items-center'>
+                                <h2 className='text-2xl font-semibold'>Sub Total :</h2>
+                                <h2 className='text-2xl font-semibold'>${subtotal}</h2>
+                            </span>
+                            <hr className='h-[2px] bg-black w-full opacity-0' />
+                            <button onClick={goCheckout} className='w-full bg-primary text-white rounded-lg py-2 font-semibold'>Checkout</button>
+                        </div>
+                    }
                 </motion.div>
             }
         </AnimatePresence>

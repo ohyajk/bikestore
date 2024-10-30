@@ -7,6 +7,7 @@ import { Autoplay } from "swiper/modules"
 import "swiper/css"
 import BikeCard from "../components/BikeCard"
 import useBikes from "../lib/bikeFetcher"
+import SkeletonCard from "../components/SkeletonCard"
 
 const Home: FC = () => {
     const swiperRefMtb = useRef<SwiperCore>()
@@ -23,8 +24,8 @@ const Home: FC = () => {
     //     })
 
 
-    const { data, isLoading } = useBikes()
-
+    const { data, isLoading, isFetching, isError } = useBikes()
+    const showSkeleton = isLoading || isFetching
     return (
         <main className="flex flex-col gap-4 sm:gap-8">
             <motion.div
@@ -129,6 +130,11 @@ const Home: FC = () => {
                 </div>
             </section>
             <section>
+                {
+                    isError && <FETCHERROR/>
+                }
+            </section>
+            <section>
                 <Swiper
                     modules={[Autoplay]}
                     spaceBetween={50}
@@ -157,17 +163,13 @@ const Home: FC = () => {
                     }}
                     loop={true}
                 >
-                    {isLoading &&
+                    {showSkeleton &&
                         Array.from({
                             length: 3,
                         }).map((_, i: Number) => {
                             return (
                                 <SwiperSlide>
-                                    <div
-                                        role="status"
-                                        key={`skeleton+${i}`}
-                                        className="h-[390px] w-full gradient-background"
-                                    ></div>
+                                    <SkeletonCard i={i} />
                                 </SwiperSlide>
                             )
                         })}
@@ -185,7 +187,7 @@ const Home: FC = () => {
 
             </section>
             <section className=" px-4 py-2">
-            <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between">
                     <span className="text-lg sm:text-2xl font-bold text-primary flex items-center gap-2">
                         <h2>City Bikes</h2>
                         <i className="fa-solid fa-angles-right"></i>
@@ -199,6 +201,11 @@ const Home: FC = () => {
                         </button>
                     </span>
                 </div>
+            </section>
+            <section>
+                {
+                    isError && <FETCHERROR/>
+                }
             </section>
             <section>
                 <Swiper
@@ -228,17 +235,13 @@ const Home: FC = () => {
                     }}
                     loop={true}
                 >
-                    {isLoading &&
+                    {showSkeleton &&
                         Array.from({
                             length: 3,
                         }).map((_, i: Number) => {
                             return (
                                 <SwiperSlide>
-                                    <div
-                                        role="status"
-                                        key={`skeleton+${i}`}
-                                        className="h-[390px] w-full gradient-background"
-                                    ></div>
+                                    <SkeletonCard i={i} />
                                 </SwiperSlide>
                             )
                         })}
@@ -254,7 +257,7 @@ const Home: FC = () => {
                 </Swiper>
             </section>
             <section className=" px-4 py-2">
-            <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between">
                     <span className="text-lg sm:text-2xl font-bold text-primary flex items-center gap-2">
                         <h2>Commuter Bikes</h2>
                         <i className="fa-solid fa-angles-right"></i>
@@ -268,6 +271,11 @@ const Home: FC = () => {
                         </button>
                     </span>
                 </div>
+            </section>
+            <section>
+                {
+                    isError && <FETCHERROR/>
+                }
             </section>
             <section>
                 <Swiper
@@ -298,17 +306,13 @@ const Home: FC = () => {
                     }}
                     loop={true}
                 >
-                    {isLoading &&
+                    {showSkeleton &&
                         Array.from({
                             length: 3,
                         }).map((_, i: Number) => {
                             return (
                                 <SwiperSlide>
-                                    <div
-                                        role="status"
-                                        key={`skeleton+${i}`}
-                                        className="h-[390px] w-full gradient-background"
-                                    ></div>
+                                    <SkeletonCard i={i} />
                                 </SwiperSlide>
                             )
                         })}
@@ -324,6 +328,15 @@ const Home: FC = () => {
                 </Swiper>
             </section>
         </main>
+    )
+}
+
+const FETCHERROR: FC = () => {
+    return (
+        <div className=' flex flex-col justify-center items-center h-60 w-full border-bg2/30 border-2 rounded-xl'>
+            <h1 className='text-primary font-black text-4xl md:text-7xl '>500</h1>
+            <h2 className='mt-2 text-lg md:text-xl uppercase'>server Error, Please try again.</h2>
+        </div>
     )
 }
 

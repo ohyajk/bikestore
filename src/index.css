@@ -72,3 +72,18 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
     background-color: #ff5e00;
 }
+
+.skeleton-grad{
+    background: linear-gradient(90deg, #2b2b2b7c 0%, #2222228f 50%, #3c3c3c7e 100%);
+    background-size: 200% 200%;
+    animation: skeleton 2.5s infinite;
+}
+
+@keyframes skeleton {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}

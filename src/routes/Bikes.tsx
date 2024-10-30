@@ -4,10 +4,11 @@ import { AnimatePresence } from "framer-motion"
 import { Bike } from "../types/types"
 import useBikes from "../lib/bikeFetcher"
 import BikeCard from "../components/BikeCard"
+import SkeletonCard from "../components/SkeletonCard"
 
 const Bikes: FC = () => {
-    const [minValue, set_minValue] = useState(5000)
-    const [maxValue, set_maxValue] = useState(25000)
+    const [minValue, set_minValue] = useState(100)
+    const [maxValue, set_maxValue] = useState(1000)
     const [ratingFilter, setRatingFilter] = useState(3)
     const [sortByA2Z, setSortByA2Z] = useState(false)
     const [sortByZ2A, setSortByZ2A] = useState(false)
@@ -35,14 +36,14 @@ const Bikes: FC = () => {
                     <hr className="h-1 w-full my-2 bg-primary" />
                 </div>
                 <div className="col-span-1">
-                    <h3 className=" text-lg flex items-center gap-2">
-                        <i className="fa-solid fa-indian-rupee-sign fa-sm"></i>
+                    <h3 className=" text-lg flex items-center gap-1">
+                        <i className="fa-solid fa-dollar-sign fa-sm"></i>
                         <span>Price</span>
                     </h3>
                     <MultiRangeSlider
-                        min={5000}
-                        max={25000}
-                        step={1000}
+                        min={100}
+                        max={1000}
+                        step={100}
                         minCaption="Min Price"
                         maxCaption="Max Price"
                         minValue={minValue}
@@ -52,7 +53,7 @@ const Bikes: FC = () => {
                             handleInput(e)
                         }}
                     />
-                    <span className="flex items-center justify-between">
+                    <span className="flex items-center justify-between text-white">
                         <h6 className="font-medium bg-primary px-2 py-1 rounded-lg text-sm">
                             {minValue}
                         </h6>
@@ -62,7 +63,7 @@ const Bikes: FC = () => {
                     </span>
                 </div>
                 <div className="col-span-1">
-                    <h3 className=" text-lg flex items-center gap-2">
+                    <h3 className=" text-lg flex items-center gap-1">
                         <i className="fa-solid fa-star fa-sm"></i>
                         <span>Ratings</span>
                     </h3>
@@ -72,9 +73,8 @@ const Bikes: FC = () => {
                             className="hover:scale-105 active:scale-125 text-primary"
                         >
                             <i
-                                className={`fa-${
-                                    ratingFilter >= 1 ? "solid" : "regular"
-                                } fa-star fa-2x`}
+                                className={`fa-${ratingFilter >= 1 ? "solid" : "regular"
+                                    } fa-star fa-2x`}
                             ></i>
                         </button>
                         <button
@@ -82,9 +82,8 @@ const Bikes: FC = () => {
                             className="hover:scale-105 active:scale-125 text-primary"
                         >
                             <i
-                                className={`fa-${
-                                    ratingFilter >= 2 ? "solid" : "regular"
-                                } fa-star fa-2x`}
+                                className={`fa-${ratingFilter >= 2 ? "solid" : "regular"
+                                    } fa-star fa-2x`}
                             ></i>
                         </button>
                         <button
@@ -92,9 +91,8 @@ const Bikes: FC = () => {
                             className="hover:scale-105 active:scale-125 text-primary"
                         >
                             <i
-                                className={`fa-${
-                                    ratingFilter >= 3 ? "solid" : "regular"
-                                } fa-star fa-2x`}
+                                className={`fa-${ratingFilter >= 3 ? "solid" : "regular"
+                                    } fa-star fa-2x`}
                             ></i>
                         </button>
                         <button
@@ -102,9 +100,8 @@ const Bikes: FC = () => {
                             className="hover:scale-105 active:scale-125 text-primary"
                         >
                             <i
-                                className={`fa-${
-                                    ratingFilter >= 4 ? "solid" : "regular"
-                                } fa-star fa-2x`}
+                                className={`fa-${ratingFilter >= 4 ? "solid" : "regular"
+                                    } fa-star fa-2x`}
                             ></i>
                         </button>
                         <button
@@ -112,9 +109,8 @@ const Bikes: FC = () => {
                             className="hover:scale-105 active:scale-125 text-primary"
                         >
                             <i
-                                className={`fa-${
-                                    ratingFilter === 5 ? "solid" : "regular"
-                                } fa-star fa-2x`}
+                                className={`fa-${ratingFilter === 5 ? "solid" : "regular"
+                                    } fa-star fa-2x`}
                             ></i>
                         </button>
                         <span>& Up</span>
@@ -213,18 +209,25 @@ const Bikes: FC = () => {
                     </ul>
                 </div>
             </section>
-            {isLoading && (
-                <div className="flex justify-center items-center h-full">
-                    <i className="fa-solid fa-spinner animate-spin fa-2x text-primary"></i>
+            {isLoading &&
+                <section className="grid grid-cols-1  sm:grid-cols-2  min-[1336px]:grid-cols-3 justify-start gap-4 ">
+                    {
+                        Array.from({
+                            length: 6,
+                        }).map((_, i: Number) => {
+                            return (
+                                <SkeletonCard i={i} />
+                            )
+                        })
+                    }
+                </section>
+            }
+            {isError && (
+                <div className="flex flex-col justify-center items-center h-full">
+                    <img className="h-[200px] " src="/404.png" />
+                    <h2 className="mt-2 text-xl">No Bikes Available...</h2>
                 </div>
             )}
-            {isError ||
-                (!isLoading && !data && (
-                    <div className="flex flex-col justify-center items-center h-full">
-                        <img className="h-[200px] " src="/404.png" />
-                        <h2 className="mt-2 text-xl">No Bikes Available...</h2>
-                    </div>
-                ))}
             <section className="grid grid-cols-1  sm:grid-cols-2  min-[1336px]:grid-cols-3 justify-start gap-4 ">
                 <AnimatePresence>
                     {data
@@ -256,21 +259,21 @@ const Bikes: FC = () => {
                         .sort(
                             sortByA2Z
                                 ? (a: Bike, b: Bike) =>
-                                      (
-                                          a.name?.toLowerCase() || ""
-                                      ).localeCompare(
-                                          b.name?.toLowerCase() || ""
-                                      )
+                                    (
+                                        a.name?.toLowerCase() || ""
+                                    ).localeCompare(
+                                        b.name?.toLowerCase() || ""
+                                    )
                                 : undefined
                         )
                         .sort(
                             sortByZ2A
                                 ? (a: Bike, b: Bike) =>
-                                      (
-                                          b.name?.toLowerCase() || ""
-                                      ).localeCompare(
-                                          a.name?.toLowerCase() || ""
-                                      )
+                                    (
+                                        b.name?.toLowerCase() || ""
+                                    ).localeCompare(
+                                        a.name?.toLowerCase() || ""
+                                    )
                                 : undefined
                         )
                         .map((p: Bike, i: Number) => {

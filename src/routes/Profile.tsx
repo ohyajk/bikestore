@@ -6,7 +6,6 @@ const Profile: FC = () => {
     const [showDialog, setShowDialog] = useState<boolean>(false)
     const navigate = useNavigate()
     const { user } = useUserState()
-    console.log(user, "my user data")
     useEffect(() => {
         if (user.email === undefined) {
             navigate("/")
