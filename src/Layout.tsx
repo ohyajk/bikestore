@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom"
+import { Route, Routes, useNavigate } from "react-router-dom"
 import Home from "./routes/Home"
 import About from "./routes/About"
 import Nav from "./components/Nav"
