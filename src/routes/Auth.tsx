@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useNavigate } from "react-router"
 import useEmailState from "../state/authMailState"
 import { toast } from "react-toastify"
+import axios from "axios"
 
 const Auth: FC = () => {
     const navigate = useNavigate()
@@ -13,13 +14,7 @@ const Auth: FC = () => {
         e.preventDefault()
         setLoading(true)
         setEmailStore(email)
-        const fetcher = await fetch("http://localhost:9000/api/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email }),
-        })
+        const fetcher = await axios.post("/signup", { email })
 
         if (fetcher.status == 201 || fetcher.status == 200) {
             navigate("/verify")
