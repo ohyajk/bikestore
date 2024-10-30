@@ -11,58 +11,58 @@ const Auth: FC = () => {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState("")
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setLoading(true)
-        setEmailStore(email)
-        const fetcher = await axios.post("/signup", { email })
-
-        if (fetcher.status == 201 || fetcher.status == 200) {
-            navigate("/verify")
-            toast.success("OTP Sent Successfully !", {
+        e.preventDefault();
+        setLoading(true);
+        setEmailStore(email);
+    
+        try {
+            const fetcher = await axios.post(
+                "/signup",
+                { email },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            console.log(fetcher);
+    
+            if (fetcher.status === 201 || fetcher.status === 200) {
+                navigate("/verify");
+                toast.success("OTP Sent Successfully !", {
+                    style: {
+                        background: "#2a2a2a",
+                        borderWidth: 1,
+                        borderColor: "#FFF",
+                        boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
+                    },
+                });
+            } else {
+                toast.error("Something went wrong!", {
+                    style: {
+                        background: "#2a2a2a",
+                        borderWidth: 1,
+                        borderColor: "#FFF",
+                        boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
+                    },
+                });
+            }
+        } catch (error) {
+            console.error("Error during signup:", error);
+            toast.error("Something went wrong!", {
                 style: {
                     background: "#2a2a2a",
                     borderWidth: 1,
                     borderColor: "#FFF",
                     boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
                 },
-            })
-        } else {
-            toast.error("Something went wrong !", {
-                style: {
-                    background: "#2a2a2a",
-                    borderWidth: 1,
-                    borderColor: "#FFF",
-                    boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
-                },
-            })
-            setLoading(false)
+            });
+        } finally {
+            setLoading(false);
         }
-
-        // if (error) {
-        //     console.log(error.message)
-        //     toast.error(error.message, {
-        //         style: {
-        //             background: "#2a2a2a",
-        //             borderWidth: 1,
-        //             borderColor: "#FFF",
-        //             boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
-        //         },
-        //     })
-        //     setLoading(false)
-        //     return null
-        // }
-        // if (data) {
-        //     console.log(data)
-        //     navigate("/verify")
-        //     toast.success("OTP Sent Successfully !", {
-        //         style: {
-        //             background: "#2a2a2a",
-        //             borderWidth: 1,
-        //             borderColor: "#FFF",
-        //             boxShadow: "0px 0px 30px 0px rgba(255,94,0,0.3)",
-        //         },
-        //     })
-    }
+    };
+    
 
     return (
         <div className="h-[calc(100vh-32px)] flex justify-center items-center ">
