@@ -2,14 +2,15 @@ import { FC, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import useUserState from "../state/userState"
-import Cookies from "universal-cookie"
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCircleUser, faRightFromBracket, faTruckFast, faUserPen } from "@fortawesome/free-solid-svg-icons"
+import axios from "axios"
+import { toast } from "react-toastify"
 type Props = {
     user: string
 }
 
 const UserDrop: FC<Props> = ({ user }: Props) => {
-    const cookies = new Cookies()
     const navigate = useNavigate()
     const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -17,10 +18,14 @@ const UserDrop: FC<Props> = ({ user }: Props) => {
     const { clearUserStore } = useUserState()
 
     const signOut = async () => {
-        cookies.remove("session", { path: "/" })
+        const reqLogout = await axios.post("/logout", {}, { withCredentials: true })
+        if (reqLogout.status !== 200) {
+            toast.error("Failed to logout")
+            return
+        }
+        toast.success("Logged out successfully")
         clearUserStore()
         navigate("/")
-        console.log("logged out")
     }
 
     useEffect(() => {
@@ -39,14 +44,14 @@ const UserDrop: FC<Props> = ({ user }: Props) => {
     return (
         <div
             className="relative flex flex-col items-center justify-center"
-            onClick={() => {if(open == false) setOpen(true)}}
+            onClick={() => { if (open == false) setOpen(true) }}
             ref={dropdownRef}
         >
             <button className="hover:text-primary delay-100 duration-300 ease-in-out flex items-center gap-2 ">
-                <i className="hidden md:block fa-solid fa-circle-user fa-2x lg:fa-lg"></i>
-                    <span className="h-[32px] w-[32px] p-1 text-white bg-primary rounded-full flex items-center justify-center md:hidden">
-                        {user.charAt(0)}
-                    </span>
+                <FontAwesomeIcon icon={faCircleUser} className="hidden md:block fa-2x lg:fa-lg" />
+                <span className="h-[32px] w-[32px] p-1 text-white bg-primary rounded-full flex items-center justify-center md:hidden">
+                    {user.charAt(0)}
+                </span>
                 <span className="capitalize hidden md:block">{user}</span>
             </button>
             {open && (
@@ -56,7 +61,7 @@ const UserDrop: FC<Props> = ({ user }: Props) => {
                         to="/orders"
                         className=" delay-100 duration-300 ease-in-out flex items-center gap-2 relative px-4 py-2 hover:text-white hover:bg-primary"
                     >
-                        <i className="fa-solid fa-truck-fast fa-lg"></i>
+                        <FontAwesomeIcon icon={faTruckFast} size="lg" />
                         <span className="capitalize whitespace-nowrap">
                             Your Orders
                         </span>
@@ -66,7 +71,7 @@ const UserDrop: FC<Props> = ({ user }: Props) => {
                         to="/profile"
                         className=" delay-100 duration-300 ease-in-out flex items-center gap-2 relative px-4 py-2 hover:text-white hover:bg-primary"
                     >
-                        <i className="fa-solid fa-user-pen fa-lg"></i>
+                        <FontAwesomeIcon icon={faUserPen} size="lg" />
                         <span className="capitalize whitespace-nowrap">
                             Your Profile
                         </span>
@@ -78,7 +83,7 @@ const UserDrop: FC<Props> = ({ user }: Props) => {
                         }}
                         className=" delay-100 duration-300 ease-in-out flex items-center gap-2 relative px-4 py-2 hover:text-white hover:bg-primary"
                     >
-                        <i className="fa-solid fa-right-from-bracket fa-lg"></i>
+                        <FontAwesomeIcon icon={faRightFromBracket} size="lg" />
                         <span className="capitalize">Logout</span>
                     </button>
                 </ul>

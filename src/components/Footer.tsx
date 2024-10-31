@@ -3,7 +3,7 @@ import { useLocation } from "react-router"
 
 const Footer: FC = () => {
     const location = useLocation()
-    const hiddenRoutes = ["/auth", "/verify", "/userDetails"]
+    const hiddenRoutes = ["/auth", "/verify", "/details"]
 
     if (hiddenRoutes.includes(location.pathname)) {
         return null
