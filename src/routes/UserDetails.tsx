@@ -68,6 +68,7 @@ const UserDetails: FC = () => {
                     zip,
                     state,
                     locality,
+                    isOnboardingComplete: true
                 },
                 {
                     withCredentials: true,

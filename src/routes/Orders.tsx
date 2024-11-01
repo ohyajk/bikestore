@@ -21,11 +21,16 @@ const Orders: FC = () => {
     })
 
     return (
-        <main className="screen-height  w-full">
+        <main className="screen-height w-full">
             <section className="h-full flex flex-col gap-4 p-4 md:p-8 rounded-lg">
                 <h1 className="text-3xl font-bold mb-4">All Orders</h1>
                 {isLoading && <Spinner />}
-                {data && (
+                {data && data.length === 0 && (
+                    <div className="h-full flex justify-center items-center">
+                        <h1 className="text-2xl font-bold opacity-80">No Orders Found</h1>
+                    </div>
+                )}
+                {data && data.length > 0 && (
                     <>
                         {data.map((o: any, i: number) => {
                             return (

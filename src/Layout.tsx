@@ -23,6 +23,9 @@ import wip from "./json/workinprog.json";
 import axios from "axios"
 import useUserState from "./state/userState"
 import { toast } from "react-toastify"
+import Payment from "./routes/Payment"
+import Success from "./routes/Success"
+import Cancel from "./routes/Cancel"
 const Layout: FC = () => {
 
     const { clearUserStore } = useUserState()
@@ -60,6 +63,9 @@ const Layout: FC = () => {
                     <Route path="/orders" element={<ProtectedRoute element={<Orders />} />} />
                     <Route path="/order/:ref" element={<ProtectedRoute element={<Order />} />} />
                     <Route path="/checkout" element={<ProtectedRoute element={<Checkout />} />} />
+                    <Route path="/payment/:ref" element={<ProtectedRoute element={<Payment />} />} />
+                    <Route path="/success" element={<Success/>} />
+                    <Route path="/cancel" element={<Cancel />} />
                 </Routes>
             </main>
             <Footer />
